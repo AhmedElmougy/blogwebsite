@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header_block %}
+<title>Login</title>
+{% endblock header_block %}
+
+{% block body_block %}
+<div class="jumbotron">
+
+    <form method="POST" >
+        
+        <div id="container">
+        <h1>Medium Editor</h1>
+        <textarea class="editable medium-editor-textarea"><p>Textarea is now supported</p></textarea>
+        </div>
+        {% csrf_token %}
+        
+        <input type="submit" class="btn btn-primary" value="Submit">
+        {% comment %} <a class="btn btn-primary" href="{% url 'basicapp:schools' %}" role="button">Cancel</a> {% endcomment %}
+  
+    </form>
+</div>
+{% endblock body_block %}

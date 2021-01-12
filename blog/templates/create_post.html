@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header_block %}
+<title>New Post</title>
+{% endblock header_block %}
+
+{% block body_block %}
+<div class="jumbotron">
+    <div class="editable">
+        <h1></h1>
+    </div>
+
+    <h1>
+        {% if  not form.instance.pk %}
+            Create new post
+        {% else %}
+            Update post
+        {% endif %}
+    </h1>
+    
+    
+
+    <form method="POST">
+        
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Submit">
+        
+    </form>
+</div>
+{% endblock body_block %}

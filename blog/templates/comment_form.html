@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header_block %}
+<title>Comment form</title>
+{% endblock header_block %}
+
+{% block body_block %}
+<div class="jumbotron">
+   
+        {% if  not form.instance.pk %}
+            <h1>Create new comment</h1>
+        {% else %}
+            <h1>Update comment</h1>
+        {% endif %}
+    
+    <br><br>
+    
+
+    <form method="POST">{% csrf_token %}
+    
+        {% for field in form %}
+            <div class="row">
+                <div class="col-md-1">    
+                    {{ field.label_tag }}
+                    {% if field.help_text %}
+                    <sup>{{ field.help_text }}</sup>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+                <div class="col-md-10 pull-left">
+                    {{ field }}
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        
+        <br><br>
+
+        <input type="submit" class="btn btn-primary sm-btn" value="Submit">
+        
+        
+        
+    </form>
+</div>
+{% endblock body_block %}

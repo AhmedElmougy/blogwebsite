@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block header_block %}
+<title>Post form</title>
+{% endblock header_block %}
+
+{% block body_block %}
+<div class="jumbotron">
+   
+        {% if  not form.instance.pk %}
+            <h1>Create new post</h1>
+        {% else %}
+            <h1>Update post</h1>
+        {% endif %}
+    
+    <br><br>
+    
+
+    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+  
+        {% for field in form %}
+            <div class="row">
+                <div class="col-md-1">    
+                    {{ field.label_tag }}
+                    {% if field.help_text %}
+                    <sup>{{ field.help_text }}</sup>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+                <div class="col-md-10 pull-left">
+                    {{ field }}
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        
+        <br><br>
+        
+        <input type="submit" class="btn btn-primary sm-btn" value="Submit">
+        
+        {% if not form.instance.pk %}
+            <a class="btn btn-primary" href="{% url 'blog:posts' %}" role="button">Cancel</a>
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'blog:post_detail' post.pk %}" role="button">Cancel</a>
+        {% endif %}
+        
+    </form>
+</div>
+{% endblock body_block %}

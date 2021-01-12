@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header_block %}
+<title>Posts</title>
+{% endblock header_block %}
+
+{% block body_block %}
+<div class="jumbotron">
+    <h1>Posts</h1>
+    
+    {%for post in post_list%}
+     <p> <b>{{post.auther}}</b></p>
+     <p> <b><a href="{% url 'blog:post_detail' post.id %}"> {{post.title|safe|linebreaks}}</a> </b></p>
+    {% if post.img %}
+    <a href="{% url 'blog:post_detail' post.pk %}"> <img src="{{post.img.url}}" class="img-fluid img-thumbnail rounded " alt="{{post.title}}" height="300"  style="max-width: 50%; " > </a>
+    {% endif %}
+    <p> <b> {{post.body|safe|linebreaks}}  </b></p>
+    <p>  {{post.created_at|date:"D d M Y"}} </p>
+    <br />
+    <br />
+    {% endfor %}
+</div>
+{% endblock body_block %}

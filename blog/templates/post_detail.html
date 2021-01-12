@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+
+{% block header_block %}
+<title>Post details</title>
+{% endblock header_block %}
+
+{% block body_block %}
+
+    {% if post.published_at or user.is_authenticated %}
+        <div class='jumbotron'>
+
+            <h1 class="d-flex justify-content-center">{{post.title|safe|linebreaks}}</h1>
+
+            {% if post.img %}
+                    <img src= "{{post.img.url}}" class="img-fluid rounded mx-auto d-block" alt="{{post.title}}" height="500"  style="max-width: 80%;" > 
+            {% endif %}
+            
+        </div>
+
+        <div class="d-flex d-flex justify-content-between">
+            <div class="p-2"><p class='lead'>{{post.auther}}</p></div>
+            <div class="p-2"><p class='lead'>created:{{post.created_at|date:"D d M Y" }}</p></div>
+            <div class="p-2">
+                {% if post.published_at %}
+                <p class="lead">published:{{post.published_at|date:"D d M Y" }}</p>
+                {% else %}
+                <p class="lead">Not published yet</p>
+                {% endif %}
+            </div>
+        </div>      
+        <br>
+        <br>
+        
+
+        <p> {{post.body|safe|linebreaks}}</p>
+        
+        <br>
+        <br>
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary btn-sm" href="{% url 'blog:post_edit' post.pk %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+            {% if not post.published_at%}
+            <a class="btn btn-primary btn-sm" href="{% url 'blog:post_publish' post.pk %}" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Publish</a>
+            {% endif %}
+            <a href="#0" class="cd-popup-trigger btn btn-danger btn-sm" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>  
+            
+            <div class="cd-popup" role="alert">
+            <div class="cd-popup-container">
+                <p>Are you sure you want to delete this post?</p>
+                <ul class="cd-buttons">
+                    <li><a href="{% url 'blog:post_delete' post.pk %}">Yes</a></li>
+                    <li><a href="{% url 'blog:post_detail' post.pk %}">No</a></li>
+                </ul>
+                <a href="#0" class="cd-popup-close img-replace">Close</a>
+            </div> <!-- cd-popup-container -->
+            </div> <!-- cd-popup -->
+
+        
+        {% endif %}      
+        <br>
+        <br>
+        <hr>
+        <h2>Comments</h2>                                                                
+        <br>
+
+        {% for comment in post.comments.all %}
+
+           <div class="d-flex flex-column bd-highlight mb-3">
+                <div class="d-flex justify-content-between bd-highlight mb-3">
+                    <div class="p-2 bd-highlight"><p><b>{{comment.auther}}</b></p></div>
+                    <div class="p-2 bd-highlight"><p>{{comment.created_at|date:"D d M Y"}}</p></div>           
+                </div>
+                <div class="p-2 bd-highlight"><p>{{comment.text|safe|linebreaks}}</p></div>     
+                
+            </div>
+                  
+            {% if user.is_authenticated %}
+                
+                <a class="btn btn-primary btn-sm" href="{% url 'blog:comment_edit' comment.pk  %}" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                
+                <!-- Button trigger modal -->
+                <a class="btn btn-danger btn-sm" role="button" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>  
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Comment delete confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>are you sure you want to delete comment</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a role="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                            <a role="button" class="btn btn-danger" href="{% url 'blog:comment_delete' comment.pk  %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                </div> 
+
+            {% endif %}                            
+
+
+            <br>
+            <br>
+            <hr>
+
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+        <a class="btn btn-primary btn-sm" href="{% url 'blog:new_comment' post=post.pk auther=user.pk %}" role="button"><i class="fa fa-plus-square" aria-hidden="true"></i> add comment</a>
+        {% endif %}
+        <br>
+        <br>
+        <br>
+
+    {% else %}
+        <h1>Not allowed please login</h1>
+    {% endif %}       
+{% endblock %}
+
+
+
+
+
+

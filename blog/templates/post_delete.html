@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+
+{% if user.is_authenticated %}
+
+    {% block header_block %}
+    <title>Post delete confirmation</title>
+    {% endblock header_block %}
+
+    {% block body_block %}
+        <br>
+        <br>
+        <br>
+
+        <form method="POST" id='myForm'>{% csrf_token %}</form>
+
+        <script type="text/javascript">
+        window.onload = function() {
+        document.getElementById("myForm").submit();
+        }
+        </script>
+
+    {% endblock %}
+
+
+
+
+{% else %}
+    Not allowed please login
+{% endif %}
